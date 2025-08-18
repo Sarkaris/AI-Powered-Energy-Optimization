@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations for alerts */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Solid color schemes for alerts */
+.alert-success {
+  background-color: #10b981;
+  border-color: #059669;
+  color: white;
+}
+
+.alert-error {
+  background-color: #ef4444;
+  border-color: #dc2626;
+  color: white;
+}
+
+.alert-warning {
+  background-color: #f59e0b;
+  border-color: #d97706;
+  color: white;
+}
+
+.alert-info {
+  background-color: #3b82f6;
+  border-color: #2563eb;
+  color: white;
+}
