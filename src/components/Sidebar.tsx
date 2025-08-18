@@ -9,17 +9,20 @@ import {
   Shield,
   ShoppingCart,
   TreePine,
-  Calculator
+  Calculator,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { NavigationItem } from '../types';
 
-// The props are simpler now - no need to pass active state from the parent
+import { ThemeToggle } from "./ThemeToggle";
+ // Import the new component
+
 interface SidebarProps {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
 }
 
-// ✅ Added a 'path' property for routing
 const navigationItems = [
   { id: 'dashboard' as NavigationItem, icon: LayoutDashboard, label: 'Dashboard', path: '/' },
   { id: 'analytics' as NavigationItem, icon: BarChart3, label: 'Analytics', path: '/analytics' },
@@ -36,7 +39,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   onToggleCollapse
 }) => {
-  // ✅ Get the current page's location from the router
   const location = useLocation();
 
   return (
@@ -62,11 +64,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <nav className="flex-1 px-4 py-4 space-y-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;
-          // ✅ Active state is now determined by the URL path
           const isActive = location.pathname === item.path;
           
           return (
-            // ✅ Replaced <button> with <Link> for proper navigation
             <Link
               key={item.id}
               to={item.path}
@@ -94,20 +94,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
-      {/* Collapse Button */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <button
-          onClick={onToggleCollapse}
-          className="w-full flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg
-                     text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700
-                     transition-colors duration-200"
-        >
-          {isCollapsed ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          )}
-        </button>
+      {/* Footer: Theme Toggle & Collapse Button */}
+      <div className="p-2 border-t border-gray-200 dark:border-gray-700">
+        <div className={`flex items-center ${isCollapsed ? 'flex-col gap-2' : 'space-x-2'}`}>
+          <ThemeToggle />
+          <button
+            onClick={onToggleCollapse}
+            className="w-full flex items-center justify-center p-2 text-sm font-medium rounded-lg
+                       text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700
+                       transition-colors duration-200"
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="w-5 h-5" />
+            ) : (
+              <ChevronLeft className="w-5 h-5" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, BarChart2, Zap, Leaf, ShoppingBag, 
-  Calculator, Bell, Settings, Shield, Menu 
+  Calculator, Bell, Settings, Shield, Menu, Sun, Moon 
 } from 'lucide-react';
+// ✅ 1. Import the useTheme hook we created earlier
+import { useTheme } from '../contexts/ThemeContext';
 
-// ✅ We now define ALL navigation items here
 const allNavItems = [
   { id: 'dashboard', icon: LayoutDashboard, path: '/', label: 'Dashboard' },
   { id: 'analytics', icon: BarChart2, path: '/analytics', label: 'Analytics' },
@@ -18,15 +19,15 @@ const allNavItems = [
   { id: 'admin', icon: Shield, path: '/admin', label: 'Admin' },
 ];
 
-// ✅ Split items into what's visible on the bar vs. what's in the "More" menu
 const mainNavItems = allNavItems.slice(0, 4);
 const moreNavItems = allNavItems.slice(4);
 
 export const BottomNavbar: React.FC = () => {
   const location = useLocation();
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  // ✅ 2. Get the current theme and the function to toggle it
+  const { theme, toggleTheme } = useTheme();
 
-  // Check if the active route is inside the "More" menu
   const isMoreMenuActive = moreNavItems.some(item => location.pathname === item.path);
 
   const handleLinkClick = () => {
@@ -35,7 +36,6 @@ export const BottomNavbar: React.FC = () => {
 
   return (
     <>
-      {/* Overlay for when the "More" menu is open */}
       {isMoreMenuOpen && (
         <div 
           onClick={() => setIsMoreMenuOpen(false)}
@@ -43,7 +43,6 @@ export const BottomNavbar: React.FC = () => {
         />
       )}
       
-      {/* ✅ The Sliding "More" Menu Panel */}
       <div className={`fixed bottom-16 left-0 right-0 bg-white dark:bg-gray-800 
                        p-4 rounded-t-2xl shadow-lg z-50 transition-transform duration-300 ease-out md:hidden
                        ${isMoreMenuOpen ? 'translate-y-0' : 'translate-y-full'}`}>
@@ -68,6 +67,22 @@ export const BottomNavbar: React.FC = () => {
             );
           })}
         </div>
+
+        {/* ✅ 3. Add the theme toggle button inside the "More" menu */}
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <button
+                onClick={toggleTheme}
+                className="flex items-center justify-between w-full p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+                <div className="flex items-center gap-4">
+                    {theme === 'light' ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+                    <span className="font-medium">Appearance</span>
+                </div>
+                <span className="text-sm px-2 py-1 rounded-full bg-gray-200 dark:bg-gray-600 capitalize">
+                    {theme}
+                </span>
+            </button>
+        </div>
       </div>
 
       {/* Main Bottom Navigation Bar */}
@@ -76,30 +91,13 @@ export const BottomNavbar: React.FC = () => {
           {mainNavItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
-              <Link
-                key={item.id}
-                to={item.path}
-                className={`flex flex-col items-center justify-center w-full transition-colors duration-200 h-full ${
-                  isActive
-                    ? 'text-emerald-500'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-emerald-500'
-                }`}
-              >
+              <Link key={item.id} to={item.path} className={`flex flex-col items-center justify-center w-full transition-colors duration-200 h-full ${isActive ? 'text-emerald-500' : 'text-gray-500 dark:text-gray-400 hover:text-emerald-500'}`}>
                 <item.icon className="w-6 h-6 mb-1" />
                 <span className="text-xs font-medium capitalize">{item.id}</span>
               </Link>
             );
           })}
-
-          {/* ✅ The "More" Button */}
-          <button
-            onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-            className={`flex flex-col items-center justify-center w-full transition-colors duration-200 h-full ${
-              isMoreMenuActive || isMoreMenuOpen
-                ? 'text-emerald-500'
-                : 'text-gray-500 dark:text-gray-400 hover:text-emerald-500'
-            }`}
-          >
+          <button onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)} className={`flex flex-col items-center justify-center w-full transition-colors duration-200 h-full ${ isMoreMenuActive || isMoreMenuOpen ? 'text-emerald-500' : 'text-gray-500 dark:text-gray-400 hover:text-emerald-500'}`}>
             <Menu className="w-6 h-6 mb-1" />
             <span className="text-xs font-medium">More</span>
           </button>
