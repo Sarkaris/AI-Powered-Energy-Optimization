@@ -1,7 +1,7 @@
 # EcoFlow Energy Optimizer ⚡
 
 <p align="center">
-  <img src="[https://i.ibb.co/68q30C4/Eco-Flow-Banner.png](https://i.ibb.co/Zp3MsbNf/image.png)" alt="EcoFlow Project Banner" />
+  <img src="https://i.ibb.co/Zp3MsbNf/image.png" alt="EcoFlow Project Banner" />
 </p>
 
 <p align="center">
