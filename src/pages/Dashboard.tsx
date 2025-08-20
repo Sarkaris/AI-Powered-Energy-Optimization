@@ -8,8 +8,13 @@ import { AIInsightCard } from '../components/AIInsightCard';
 import { GridStatusPanel } from '../components/GridStatusPanel';
 import { generateEnergyData, mockSectorMetrics, mockAIInsights, mockGridData, mockCarbonFootprint } from '../services/mockData';
 import { EnergyData, SectorType } from '../types';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 export const Dashboard: React.FC = () => {
+    const navigate = useNavigate();
     const [energyData, setEnergyData] = useState<EnergyData[]>([]);
     const [selectedSector, setSelectedSector] = useState<SectorType>('residential');
     const [currentUsage, setCurrentUsage] = useState(2.4);
@@ -140,7 +145,10 @@ export const Dashboard: React.FC = () => {
                             key={updatedMetrics.sector}
                             metrics={updatedMetrics}
                             isSelected={selectedSector === metrics.sector}
-                            onClick={() => setSelectedSector(metrics.sector)}
+                            onClick={() =>{
+                                 setSelectedSector(metrics.sector)
+                                    navigate("/calculator")                            
+                                    }}
                             onCalculateClick={handleCalculateClick}
                         />
                     );
